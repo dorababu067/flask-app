@@ -2,19 +2,15 @@ import smtplib, ssl
 from flask import Flask
 from datetime import datetime
 from email.message import EmailMessage
-from flask_apscheduler import APScheduler
 from config import logger
 
 
 app = Flask(__name__)
-scheduler = APScheduler()
-scheduler.api_enabled = True
-scheduler.init_app(app)
-scheduler.start()
 
 
 @app.route("/")
 def home():
+    logger.info("Mail Sent Sucessfully.")
     return {"message": "Welcome to the flask scheduler."}
 
 
