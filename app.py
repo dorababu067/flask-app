@@ -8,14 +8,19 @@ from config import logger
 
 app = Flask(__name__)
 scheduler = APScheduler()
-scheduler.init_app(app)
 scheduler.api_enabled = True
+scheduler.init_app(app)
 scheduler.start()
 
 
-@scheduler.task("interval", id="#send_email", seconds=10)
+@scheduler.task(trigger="interval", id="#send_email", seconds=5)
 def send_mail():
     logger.info("Mail sent successfully.")
+
+
+@app.route("/")
+def home():
+    return {"message": "Welcome to the flask scheduler."}
 
 
 if __name__ == "__main__":
