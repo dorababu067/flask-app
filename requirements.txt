@@ -18,3 +18,4 @@ tomli==2.0.1
 tzdata==2023.3
 tzlocal==4.3
 Werkzeug==2.2.3
+python-decouple==3.8
