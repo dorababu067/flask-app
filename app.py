@@ -38,9 +38,6 @@ def send_mail():
             logging.exception("Authentication Error")
 
 
-send_mail()
-
-
 @app.route("/")
 def home():
     return {"message": "Welcome to the flask scheduler."}
