@@ -1,20 +1,19 @@
-import logging
 import smtplib, ssl
 from flask import Flask
+from decouple import config
 from datetime import datetime
 from email.message import EmailMessage
-from flask_apscheduler import APScheduler
-from decouple import config
 
 
 app = Flask(__name__)
-scheduler = APScheduler()
-scheduler.api_enabled = True
-scheduler.init_app(app)
-scheduler.start()
 
 
-@scheduler.task(trigger="interval", id="#send_email", seconds=20)
+@app.route("/")
+def home():
+    return {"message": "Welcome to the flask scheduler."}
+
+
+@app.route("/send-mail")
 def send_mail():
     port = 465
     smtp_server = "smtp.gmail.com"
@@ -33,14 +32,9 @@ def send_mail():
         try:
             server.login(config("MAIL_USERNAME"), config("MAIL_PASSWORD"))
             server.send_message(message)
-            logging.info("Mail send sucessfully")
+            return {"message": "Mail send sucessfully"}
         except:
-            logging.exception("Authentication Error")
-
-
-@app.route("/")
-def home():
-    return {"message": "Welcome to the flask scheduler."}
+            return {"message": "Mail sending failed"}
 
 
 if __name__ == "__main__":
